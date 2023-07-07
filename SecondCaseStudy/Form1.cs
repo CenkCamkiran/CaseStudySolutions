@@ -25,6 +25,9 @@ namespace SecondCaseStudy
             Pen bluePen = new Pen(blue);
             bluePen.Width = 5;
 
+            var font = new Font(FontFamily.GenericSerif, 6f, FontStyle.Bold, GraphicsUnit.Pixel);
+            var brush = new SolidBrush(Color.Red);
+
             OpenFileDialog openFileDialog = new OpenFileDialog();
             DialogResult result = openFileDialog.ShowDialog();
             if (result == DialogResult.OK)
@@ -41,11 +44,66 @@ namespace SecondCaseStudy
                     int minX = 500; int minY = 500;
                     int maxX = 0; int maxY = 0;
 
+                    int counter = 0;
+
+                    int x1 = 0;
+                    int x2 = 0;
+                    int x3 = 0;
+                    int x4 = 0;
+                    int y1 = 0;
+                    int y2 = 0;
+                    int y3 = 0;
+                    int y4 = 0;
+
                     foreach (ResponseModel item in response)
                     {
                         foreach (Vertex vertex in item.boundingPoly.vertices)
                         {
-                            verticeList.Add(vertex);
+                            if (counter == 0)
+                            {
+                                x1 = vertex.x;
+                                y1 = vertex.y;
+
+                                counter++;
+                            }
+
+                            else if (counter == 1)
+                            {
+                                x2 = vertex.x;
+                                y2 = vertex.y;
+
+                                counter++;
+                            }
+
+                            else if (counter == 2)
+                            {
+                                x3 = vertex.x;
+                                y3 = vertex.y;
+
+                                counter++;
+                            }
+
+                            else if (counter == 3)
+                            {
+                                x4 = vertex.x;
+                                y4 = vertex.y;
+
+                                int finalMinx = Math.Min(Math.Min(x1, x2), Math.Min(x3, x4));
+                                int finalMiny = Math.Min(Math.Min(y1, y2), Math.Min(y3, y4));
+
+                                int finalMaxx = Math.Max(Math.Max(x1, x2), Math.Max(x3, x4));
+                                int finalMaxy = Math.Max(Math.Max(y1, y2), Math.Max(y3, y4));
+
+                                //rectangleList.Add(new Rectangle(finalMinx, finalMiny, (finalMaxx - finalMinx), (finalMaxy - finalMiny)));
+
+                                verticeList.Add(vertex);
+
+                                PointF pointF1 = new PointF(finalMinx, finalMiny);
+                                graphics.DrawString(item.description, font, brush, pointF1);
+
+                                counter = 0;
+                            }
+
                         }
                     }
 
@@ -64,76 +122,72 @@ namespace SecondCaseStudy
                             minY = vertex.y;
                     }
 
-                    Rectangle rectangle = new Rectangle(minX, minY, (maxX - minX), (maxY - minY));
-                    int counter = 0;
+                    Rectangle rectangle = new Rectangle(minX, minY, (maxX - minX) + 1000, (maxY - minY) + 1000);
+                    graphics.DrawRectangle(bluePen, rectangle);
 
-                    int x1 = 0;
-                    int x2 = 0;
-                    int x3 = 0;
-                    int x4 = 0;
-                    int y1 = 0;
-                    int y2 = 0;
-                    int y3 = 0;
-                    int y4 = 0;
+                    //foreach (Vertex vertex in verticeList)
+                    //{
+                    //    if (counter == 0)
+                    //    {
+                    //        x1 = vertex.x;
+                    //        y1 = vertex.y;
 
-                    foreach (Vertex vertex in verticeList)
-                    {
-                        if (counter == 0)
-                        {
-                            x1 = vertex.x;
-                            y1 = vertex.y;
+                    //        counter++;
+                    //    }
 
-                            counter++;
-                        }
+                    //    else if (counter == 1)
+                    //    {
+                    //        x2 = vertex.x;
+                    //        y2 = vertex.y;
 
-                        else if (counter == 1)
-                        {
-                            x2 = vertex.x;
-                            y2 = vertex.y;
+                    //        counter++;
+                    //    }
 
-                            counter++;
-                        }
+                    //    else if(counter == 2)
+                    //    {
+                    //        x3 = vertex.x;
+                    //        y3 = vertex.y;
 
-                        else if(counter == 2)
-                        {
-                            x3 = vertex.x;
-                            y3 = vertex.y;
+                    //        counter++;
+                    //    }
 
-                            counter++;
-                        }
+                    //    else if(counter == 3)
+                    //    {
+                    //        x4 = vertex.x;
+                    //        y4 = vertex.y;
 
-                        else if(counter == 3)
-                        {
-                            x4 = vertex.x;
-                            y4 = vertex.y;
+                    //        int finalMinx = Math.Min(Math.Min(x1, x2), Math.Min(x3, x4));
+                    //        int finalMiny = Math.Min(Math.Min(y1, y2), Math.Min(y3, y4));
 
-                            int finalMinx = Math.Min(Math.Min(x1, x2), Math.Min(x3, x4));
-                            int finalMiny = Math.Min(Math.Min(y1, y2), Math.Min(y3, y4));
+                    //        int finalMaxx = Math.Max(Math.Max(x1, x2), Math.Max(x3, x4));
+                    //        int finalMaxy = Math.Max(Math.Max(y1, y2), Math.Max(y3, y4));
 
-                            int finalMaxx = Math.Max(Math.Max(x1, x2), Math.Max(x3, x4));
-                            int finalMaxy = Math.Max(Math.Max(y1, y2), Math.Max(y3, y4));
+                    //        rectangleList.Add(new Rectangle(finalMinx, finalMiny, (finalMaxx - finalMinx), (finalMaxy - finalMiny)));
 
-                            rectangleList.Add(new Rectangle(finalMinx, finalMiny, (finalMaxx - finalMinx), (finalMaxy - finalMiny)));
+                    //        counter = 0;
+                    //    }
 
-                            counter = 0;
-                        }
-
-                    }
+                    //}
 
                     Console.WriteLine("Cenk CAMKIRAN");
-                    graphics.DrawRectangle(redPen, rectangle);
+                    //graphics.DrawRectangle(redPen, rectangle);
 
-                    foreach(Rectangle item in rectangleList)
-                    {
-                        graphics.DrawRectangle(bluePen, item);
+                    //foreach(Rectangle item in rectangleList)
+                    //{
+                    //    graphics.DrawRectangle(bluePen, item);
 
-                        var font = new Font(FontFamily.GenericSerif, 40f, FontStyle.Bold);
-                        var brush = new SolidBrush(Color.Red);
+                    //    graphics.DrawString("Welcome to Bitmap!", font, brush, 10, 20);
+                    //}
 
-                        graphics.DrawString("Welcome to Bitmap!", font, brush, 10, 20);
-                    }
+                    //Bitmap bitmap2 = new Bitmap(500, 200);
+                    //var font2 = new Font(FontFamily.GenericSerif, 16f, FontStyle.Bold);
+                    //var brush2 = new SolidBrush(Color.Red);
+                    //Graphics graphics2 = Graphics.FromImage(bitmap2);
+                    //graphics2.DrawString("Welcome to Bitmap!", font2, brush2, 10, 20);
+                    //bitmap2.Save(@"output2.png");
 
                     bitmap.Save(@"output.png");
+
 
                 }
                 catch (IOException exception)
