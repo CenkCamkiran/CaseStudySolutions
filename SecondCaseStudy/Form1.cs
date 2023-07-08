@@ -14,18 +14,22 @@ namespace SecondCaseStudy
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            Bitmap bitmap = new Bitmap(1920, 1080, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+            Bitmap bitmap = new Bitmap(2560, 1440, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+            Bitmap bitmap2 = new Bitmap(2560, 1440, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+            Bitmap bitmap3 = new Bitmap(2560, 1440, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
             Graphics graphics = Graphics.FromImage(bitmap);
+            Graphics graphics2 = Graphics.FromImage(bitmap2);
+            Graphics graphics3 = Graphics.FromImage(bitmap3);
 
             Color red = Color.FromArgb(255, 255, 0, 0);
             Pen redPen = new Pen(red);
-            redPen.Width = 5;
+            redPen.Width = 1;
 
             Color blue = Color.FromArgb(255, 0, 0, 255);
             Pen bluePen = new Pen(blue);
             bluePen.Width = 5;
 
-            var font = new Font(FontFamily.GenericSerif, 6f, FontStyle.Bold, GraphicsUnit.Pixel);
+            var font = new Font("Arial", 10, FontStyle.Regular, GraphicsUnit.Pixel);
             var brush = new SolidBrush(Color.Red);
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -94,12 +98,16 @@ namespace SecondCaseStudy
                                 int finalMaxx = Math.Max(Math.Max(x1, x2), Math.Max(x3, x4));
                                 int finalMaxy = Math.Max(Math.Max(y1, y2), Math.Max(y3, y4));
 
-                                //rectangleList.Add(new Rectangle(finalMinx, finalMiny, (finalMaxx - finalMinx), (finalMaxy - finalMiny)));
+                                Rectangle rectangle = new Rectangle(finalMinx, finalMiny, (finalMaxx - finalMinx), (finalMaxy - finalMiny));
+
+                                //https://learn.microsoft.com/tr-tr/dotnet/desktop/winforms/advanced/how-to-draw-wrapped-text-in-a-rectangle?view=netframeworkdesktop-4.8
+
+                                graphics.DrawString(item.description, font, Brushes.Blue, rectangle);
+                                graphics2.DrawRectangle(redPen, rectangle);
+
+                                graphics3.DrawStringInside(rectangle, font, Brushes.Blue ,item.description);
 
                                 verticeList.Add(vertex);
-
-                                PointF pointF1 = new PointF(finalMinx, finalMiny);
-                                graphics.DrawString(item.description, font, brush, pointF1);
 
                                 counter = 0;
                             }
@@ -107,87 +115,11 @@ namespace SecondCaseStudy
                         }
                     }
 
-                    foreach (Vertex vertex in verticeList)
-                    {
-                        if (vertex.x > maxX)
-                            maxX = vertex.x;
-
-                        if (vertex.x < minX)
-                            minX = vertex.x;
-
-                        if (vertex.y > maxY)
-                            maxY = vertex.y;
-
-                        if (vertex.y < minY)
-                            minY = vertex.y;
-                    }
-
-                    Rectangle rectangle = new Rectangle(minX, minY, (maxX - minX) + 1000, (maxY - minY) + 1000);
-                    graphics.DrawRectangle(bluePen, rectangle);
-
-                    //foreach (Vertex vertex in verticeList)
-                    //{
-                    //    if (counter == 0)
-                    //    {
-                    //        x1 = vertex.x;
-                    //        y1 = vertex.y;
-
-                    //        counter++;
-                    //    }
-
-                    //    else if (counter == 1)
-                    //    {
-                    //        x2 = vertex.x;
-                    //        y2 = vertex.y;
-
-                    //        counter++;
-                    //    }
-
-                    //    else if(counter == 2)
-                    //    {
-                    //        x3 = vertex.x;
-                    //        y3 = vertex.y;
-
-                    //        counter++;
-                    //    }
-
-                    //    else if(counter == 3)
-                    //    {
-                    //        x4 = vertex.x;
-                    //        y4 = vertex.y;
-
-                    //        int finalMinx = Math.Min(Math.Min(x1, x2), Math.Min(x3, x4));
-                    //        int finalMiny = Math.Min(Math.Min(y1, y2), Math.Min(y3, y4));
-
-                    //        int finalMaxx = Math.Max(Math.Max(x1, x2), Math.Max(x3, x4));
-                    //        int finalMaxy = Math.Max(Math.Max(y1, y2), Math.Max(y3, y4));
-
-                    //        rectangleList.Add(new Rectangle(finalMinx, finalMiny, (finalMaxx - finalMinx), (finalMaxy - finalMiny)));
-
-                    //        counter = 0;
-                    //    }
-
-                    //}
-
                     Console.WriteLine("Cenk CAMKIRAN");
-                    //graphics.DrawRectangle(redPen, rectangle);
-
-                    //foreach(Rectangle item in rectangleList)
-                    //{
-                    //    graphics.DrawRectangle(bluePen, item);
-
-                    //    graphics.DrawString("Welcome to Bitmap!", font, brush, 10, 20);
-                    //}
-
-                    //Bitmap bitmap2 = new Bitmap(500, 200);
-                    //var font2 = new Font(FontFamily.GenericSerif, 16f, FontStyle.Bold);
-                    //var brush2 = new SolidBrush(Color.Red);
-                    //Graphics graphics2 = Graphics.FromImage(bitmap2);
-                    //graphics2.DrawString("Welcome to Bitmap!", font2, brush2, 10, 20);
-                    //bitmap2.Save(@"output2.png");
 
                     bitmap.Save(@"output.png");
-
+                    bitmap2.Save(@"output2.png");
+                    bitmap3.Save(@"output3.png");
 
                 }
                 catch (IOException exception)
@@ -196,6 +128,5 @@ namespace SecondCaseStudy
                 }
             }
         }
-
     }
 }
