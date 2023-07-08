@@ -1,4 +1,4 @@
-# Case Study Solutions
+# Case Study Cevapları
 
 ## Özet
 
@@ -6,7 +6,7 @@ Soru 1'nin cevabı **FirstCaseStudy** ve Soru 2'nin cevapları **SecondCaseStudy
 
 ## İçerik
 
-- [Case Study Solutions](#case-study-solutions)
+- [Case Study Cevapları](#case-study-cevapları)
   - [Özet](#özet)
   - [İçerik](#i̇çerik)
   - [Projeler](#projeler)
