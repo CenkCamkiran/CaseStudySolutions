@@ -17,7 +17,7 @@ namespace SecondCaseStudy
 
         private void pickFileBtn_Click(object sender, EventArgs e)
         {
-            int offSet = 15;
+            int offSet = 15; //iki dikdörtgen arasındaki min uzunluk. bu değeri geçerse dikdörtgen bir alt satırda demek.
 
             Bitmap layoutBitmap = new Bitmap(2560, 1440, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
             Bitmap resultBitmap = new Bitmap(2560, 1440, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
@@ -51,9 +51,15 @@ namespace SecondCaseStudy
 
                     //response.json dosyasını Deserialize et.
                     List<ResponseModel> response = JsonConvert.DeserializeObject<List<ResponseModel>>(text);
+                    response.RemoveAt(0); //ilk elemanı siliyorum çünkü datanın tüm hali olduğunu gördüm.
                     Dictionary<Rectangle, string> items = new Dictionary<Rectangle, string>();
 
                     int counter = 0;
+                    int counter2 = 0;
+                    int counter3 = 0;
+
+                    List<int> maxValues = new List<int>();
+                    int MaxYCoord = 0;
 
                     //dikdörtgen köşe koordinatları
                     int x1 = 0;
@@ -65,6 +71,8 @@ namespace SecondCaseStudy
                     int y3 = 0;
                     int y4 = 0;
 
+                    StringBuilder stringBuilder = new StringBuilder();
+
                     foreach (ResponseModel item in response)
                     {
                         foreach (Vertex vertex in item.boundingPoly.vertices)
@@ -75,6 +83,7 @@ namespace SecondCaseStudy
                                 y1 = vertex.y;
 
                                 counter++;
+                                counter2++;
                             }
 
                             else if (counter == 1) // dikdörtgen sağ alt köşe noktası
@@ -83,6 +92,7 @@ namespace SecondCaseStudy
                                 y2 = vertex.y;
 
                                 counter++;
+                                counter2++;
                             }
 
                             else if (counter == 2) // dikdörtgen sağ üst köşe noktası
@@ -91,12 +101,40 @@ namespace SecondCaseStudy
                                 y3 = vertex.y;
 
                                 counter++;
+                                counter2++;
                             }
 
                             else if (counter == 3) // dikdörtgen sol üst köşe noktası
                             {
                                 x4 = vertex.x;
                                 y4 = vertex.y;
+
+                                //******************************************************************************
+                                //Text dosyasına istendiği gibi yazılabilmesi için geliştirdiğim kod
+                                if (counter2 % 3 == 0 && counter3 == 0)
+                                {
+                                    maxValues.Add(Math.Max(y3, y4));
+                                    MaxYCoord = Math.Max(y3, y4);
+                                }
+                                else if (counter2 % 3 == 0 && counter3 != 0)
+                                {
+                                    MaxYCoord = Math.Max(Math.Max(y3, y4), MaxYCoord);
+
+                                    if (Math.Abs(MaxYCoord - maxValues[0]) > offSet)
+                                    {
+                                        stringBuilder.Append(Environment.NewLine);
+                                        stringBuilder.Append(item.description);
+                                    }
+                                    else
+                                    {
+                                        stringBuilder.Append(" ");
+                                        stringBuilder.Append(item.description);
+                                    }
+                                    int newMinValue = Math.Max(MaxYCoord, maxValues[0]);
+                                    maxValues.Clear();
+                                    maxValues.Add(newMinValue);
+                                }
+                                //******************************************************************************
 
                                 int finalMinx = Math.Min(Math.Min(x1, x2), Math.Min(x3, x4));
                                 int finalMiny = Math.Min(Math.Min(y1, y2), Math.Min(y3, y4));
@@ -116,13 +154,20 @@ namespace SecondCaseStudy
                                 items.Add(rectangle, item.description);
 
                                 counter = 0;
+                                counter2 = 0;
+                                counter3++;
                             }
 
                         }
                     }
 
-                    //herşeyi resim olarak kaydet.
+                    //yazı olarak kaydet
+                    File.WriteAllText("resultText.txt", stringBuilder.ToString());
+
+                    //layout'u resim olarak kaydet.
                     layoutBitmap.Save(@"layout.png");
+
+                    //fiş'i resim olarak kaydet.
                     resultBitmap.Save(@"result.png");
 
                     string message = "layout.png ve result.png oluşturulmuştur.";
