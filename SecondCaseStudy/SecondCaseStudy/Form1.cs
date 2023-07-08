@@ -115,6 +115,8 @@ namespace SecondCaseStudy
                                 {
                                     maxValues.Add(Math.Max(y3, y4));
                                     MaxYCoord = Math.Max(y3, y4);
+
+                                    stringBuilder.Append(item.description);
                                 }
                                 else if (counter2 % 3 == 0 && counter3 != 0)
                                 {
