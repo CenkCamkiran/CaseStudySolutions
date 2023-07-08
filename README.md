@@ -33,6 +33,6 @@ Soru 1'nin cevabı **FirstCaseStudy** ve Soru 2'nin cevapları **SecondCaseStudy
 
 - .NET CORE 6 ile geliştirilmiş bir Windows Form Uygulamasıdır.
 
-- Çalıştırıldığı zaman bir FileSelect Dialog çıkmaktadır. Oradan **response.json** dosyasının (Case Study'de mevcut) seçilmesi gerekmektedir. Seçildikten sonra SecondCaseStudy\bin\Debug\net6.0-windows klasörü içerisinde **result.png** ve **layout.png** adında 2 dosya oluşmaktadır. **result.png** dosyasında, **response.json** dosyasının parse edilip fişin resimleştirilmesi amaçlanmıştır. **layout.png** dosyasında, fiş üzerindeki her bir yazının sınırları ile resimleştirilmesi amaçlanmıştır.
+- Çalıştırıldığı zaman ekranda bir form karşımıza çıkmaktadır. Form üzerinde bulunan **Dosya Seç** butonu tıklandıktan sonra, FileSelect Dialog üzerinden **response.json** dosyasının (Case Study'de mevcut) seçilmesi gerekmektedir. Seçildikten sonra SecondCaseStudy\bin\Debug\net6.0-windows klasörü içerisinde **result.png** ve **layout.png** adında 2 dosya oluşmaktadır. **result.png** dosyasında, **response.json** dosyasının parse edilip fişin resimleştirilmesi amaçlanmıştır. **layout.png** dosyasında, fiş üzerindeki her bir yazının sınırları ile resimleştirilmesi amaçlanmıştır.
 
 - Çalıştırmak için Visual Studio veya uyumlu bir IDE kullanılması yeterlidir.
