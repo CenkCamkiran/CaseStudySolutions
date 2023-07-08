@@ -2,11 +2,14 @@ using Newtonsoft.Json;
 using SecondCaseStudy;
 using System;
 using System.Drawing;
+using System.Numerics;
+using System.Text;
 
 namespace SecondCaseStudy
 {
     public partial class form : Form
     {
+
         public form()
         {
             InitializeComponent();
@@ -14,12 +17,13 @@ namespace SecondCaseStudy
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            Bitmap bitmap = new Bitmap(2560, 1440, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
-            Bitmap bitmap2 = new Bitmap(2560, 1440, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
-            Bitmap bitmap3 = new Bitmap(2560, 1440, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
-            Graphics graphics = Graphics.FromImage(bitmap);
-            Graphics graphics2 = Graphics.FromImage(bitmap2);
-            Graphics graphics3 = Graphics.FromImage(bitmap3);
+            int offSet = 15;
+
+            Bitmap layoutBitmap = new Bitmap(2560, 1440, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+            Bitmap resultBitmap = new Bitmap(2560, 1440, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+
+            Graphics layoutGraphics = Graphics.FromImage(layoutBitmap);
+            Graphics resultGraphics = Graphics.FromImage(resultBitmap);
 
             Color red = Color.FromArgb(255, 255, 0, 0);
             Pen redPen = new Pen(red);
@@ -30,7 +34,6 @@ namespace SecondCaseStudy
             bluePen.Width = 5;
 
             var font = new Font("Arial", 10, FontStyle.Regular, GraphicsUnit.Pixel);
-            var brush = new SolidBrush(Color.Red);
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
             DialogResult result = openFileDialog.ShowDialog();
@@ -42,11 +45,7 @@ namespace SecondCaseStudy
                 {
                     string text = File.ReadAllText(file);
                     List<ResponseModel> response = JsonConvert.DeserializeObject<List<ResponseModel>>(text);
-                    List<Vertex> verticeList = new List<Vertex>();
-                    List<Rectangle> rectangleList = new List<Rectangle>();
-
-                    int minX = 500; int minY = 500;
-                    int maxX = 0; int maxY = 0;
+                    Dictionary<Rectangle, string> items = new Dictionary<Rectangle, string>();
 
                     int counter = 0;
 
@@ -63,7 +62,7 @@ namespace SecondCaseStudy
                     {
                         foreach (Vertex vertex in item.boundingPoly.vertices)
                         {
-                            if (counter == 0)
+                            if (counter == 0) //sol alt
                             {
                                 x1 = vertex.x;
                                 y1 = vertex.y;
@@ -71,7 +70,7 @@ namespace SecondCaseStudy
                                 counter++;
                             }
 
-                            else if (counter == 1)
+                            else if (counter == 1) //sag alt
                             {
                                 x2 = vertex.x;
                                 y2 = vertex.y;
@@ -79,7 +78,7 @@ namespace SecondCaseStudy
                                 counter++;
                             }
 
-                            else if (counter == 2)
+                            else if (counter == 2) //sag ust
                             {
                                 x3 = vertex.x;
                                 y3 = vertex.y;
@@ -87,7 +86,7 @@ namespace SecondCaseStudy
                                 counter++;
                             }
 
-                            else if (counter == 3)
+                            else if (counter == 3) //sol ust
                             {
                                 x4 = vertex.x;
                                 y4 = vertex.y;
@@ -100,14 +99,10 @@ namespace SecondCaseStudy
 
                                 Rectangle rectangle = new Rectangle(finalMinx, finalMiny, (finalMaxx - finalMinx), (finalMaxy - finalMiny));
 
-                                //https://learn.microsoft.com/tr-tr/dotnet/desktop/winforms/advanced/how-to-draw-wrapped-text-in-a-rectangle?view=netframeworkdesktop-4.8
+                                layoutGraphics.DrawRectangle(redPen, rectangle);
+                                resultGraphics.DrawStringInside(rectangle, font, Brushes.Blue, item.description);
 
-                                graphics.DrawString(item.description, font, Brushes.Blue, rectangle);
-                                graphics2.DrawRectangle(redPen, rectangle);
-
-                                graphics3.DrawStringInside(rectangle, font, Brushes.Blue ,item.description);
-
-                                verticeList.Add(vertex);
+                                items.Add(rectangle, item.description);
 
                                 counter = 0;
                             }
@@ -115,11 +110,8 @@ namespace SecondCaseStudy
                         }
                     }
 
-                    Console.WriteLine("Cenk CAMKIRAN");
-
-                    bitmap.Save(@"output.png");
-                    bitmap2.Save(@"output2.png");
-                    bitmap3.Save(@"output3.png");
+                    layoutBitmap.Save(@"layout.png");
+                    resultBitmap.Save(@"result.png");
 
                 }
                 catch (IOException exception)

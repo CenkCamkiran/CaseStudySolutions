@@ -10,7 +10,6 @@ namespace SecondCaseStudy
     {
         public static void DrawStringInside(this Graphics graphics, Rectangle rect, Font font, Brush brush, string text)
         {
-            File.AppendAllText("cenk.txt", text);
             var textSize = graphics.MeasureString(text, font);
             var state = graphics.Save();
             graphics.TranslateTransform(rect.Left, rect.Top);
