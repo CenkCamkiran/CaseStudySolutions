@@ -104,9 +104,10 @@ namespace SecondCaseStudy
                                 int finalMaxx = Math.Max(Math.Max(x1, x2), Math.Max(x3, x4));
                                 int finalMaxy = Math.Max(Math.Max(y1, y2), Math.Max(y3, y4));
 
-                                //yazının olduğu dikdörtgeni çiz
+                                //yazının olduğu dikdörtgeni belirle
                                 Rectangle rectangle = new Rectangle(finalMinx, finalMiny, (finalMaxx - finalMinx), (finalMaxy - finalMiny));
 
+                                //yazının olduğu dikdörtgeni çiz
                                 layoutGraphics.DrawRectangle(redPen, rectangle);
 
                                 //yazıyı dikdörtgenin içinde yaz
