@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SecondCaseStudy;
 using System;
 using System.Drawing;
@@ -15,7 +15,7 @@ namespace SecondCaseStudy
             InitializeComponent();
         }
 
-        private void Form1_Paint(object sender, PaintEventArgs e)
+        private void pickFileBtn_Click(object sender, EventArgs e)
         {
             int offSet = 15;
 
@@ -113,10 +113,18 @@ namespace SecondCaseStudy
                     layoutBitmap.Save(@"layout.png");
                     resultBitmap.Save(@"result.png");
 
+                    string message = "layout.png ve result.png oluşturulmuştur.";
+                    string title = "Durum";
+                    MessageBox.Show(message, title);
+
                 }
                 catch (IOException exception)
                 {
                     Console.WriteLine(exception.Message);
+
+                    string message = exception.Message.ToString();
+                    string title = "HATA";
+                    MessageBox.Show(message, title);
                 }
             }
         }

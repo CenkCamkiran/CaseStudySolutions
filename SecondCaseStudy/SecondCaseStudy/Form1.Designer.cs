@@ -28,19 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
+            pickFileBtn = new Button();
             SuspendLayout();
+            // 
+            // pickFileBtn
+            // 
+            pickFileBtn.Location = new Point(71, 47);
+            pickFileBtn.Name = "pickFileBtn";
+            pickFileBtn.Size = new Size(93, 45);
+            pickFileBtn.TabIndex = 0;
+            pickFileBtn.Text = "Dosya Seç";
+            pickFileBtn.UseVisualStyleBackColor = true;
+            pickFileBtn.Click += pickFileBtn_Click;
             // 
             // form
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(898, 382);
+            ClientSize = new Size(253, 150);
+            Controls.Add(pickFileBtn);
             Name = "form";
             Text = "Form1";
-            Paint += Form1_Paint;
             ResumeLayout(false);
         }
 
         #endregion
+
+        private Button pickFileBtn;
     }
 }
