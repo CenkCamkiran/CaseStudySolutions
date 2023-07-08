@@ -25,14 +25,17 @@ namespace SecondCaseStudy
             Graphics layoutGraphics = Graphics.FromImage(layoutBitmap);
             Graphics resultGraphics = Graphics.FromImage(resultBitmap);
 
+            //Kırmızı renk
             Color red = Color.FromArgb(255, 255, 0, 0);
             Pen redPen = new Pen(red);
             redPen.Width = 1;
 
+            //Mavi renk
             Color blue = Color.FromArgb(255, 0, 0, 255);
             Pen bluePen = new Pen(blue);
             bluePen.Width = 5;
 
+            //Yazılar için font
             var font = new Font("Arial", 10, FontStyle.Regular, GraphicsUnit.Pixel);
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -43,12 +46,16 @@ namespace SecondCaseStudy
 
                 try
                 {
+                    //response.json dosyasını oku.
                     string text = File.ReadAllText(file);
+
+                    //response.json dosyasını Deserialize et.
                     List<ResponseModel> response = JsonConvert.DeserializeObject<List<ResponseModel>>(text);
                     Dictionary<Rectangle, string> items = new Dictionary<Rectangle, string>();
 
                     int counter = 0;
 
+                    //dikdörtgen köşe koordinatları
                     int x1 = 0;
                     int x2 = 0;
                     int x3 = 0;
@@ -62,7 +69,7 @@ namespace SecondCaseStudy
                     {
                         foreach (Vertex vertex in item.boundingPoly.vertices)
                         {
-                            if (counter == 0) //sol alt
+                            if (counter == 0) // dikdörtgen sol alt köşe noktası
                             {
                                 x1 = vertex.x;
                                 y1 = vertex.y;
@@ -70,7 +77,7 @@ namespace SecondCaseStudy
                                 counter++;
                             }
 
-                            else if (counter == 1) //sag alt
+                            else if (counter == 1) // dikdörtgen sağ alt köşe noktası
                             {
                                 x2 = vertex.x;
                                 y2 = vertex.y;
@@ -78,7 +85,7 @@ namespace SecondCaseStudy
                                 counter++;
                             }
 
-                            else if (counter == 2) //sag ust
+                            else if (counter == 2) // dikdörtgen sağ üst köşe noktası
                             {
                                 x3 = vertex.x;
                                 y3 = vertex.y;
@@ -86,7 +93,7 @@ namespace SecondCaseStudy
                                 counter++;
                             }
 
-                            else if (counter == 3) //sol ust
+                            else if (counter == 3) // dikdörtgen sol üst köşe noktası
                             {
                                 x4 = vertex.x;
                                 y4 = vertex.y;
@@ -97,9 +104,12 @@ namespace SecondCaseStudy
                                 int finalMaxx = Math.Max(Math.Max(x1, x2), Math.Max(x3, x4));
                                 int finalMaxy = Math.Max(Math.Max(y1, y2), Math.Max(y3, y4));
 
+                                //yazının olduğu dikdörtgeni çiz
                                 Rectangle rectangle = new Rectangle(finalMinx, finalMiny, (finalMaxx - finalMinx), (finalMaxy - finalMiny));
 
                                 layoutGraphics.DrawRectangle(redPen, rectangle);
+
+                                //yazıyı dikdörtgenin içinde yaz
                                 resultGraphics.DrawStringInside(rectangle, font, Brushes.Blue, item.description);
 
                                 items.Add(rectangle, item.description);
@@ -110,6 +120,7 @@ namespace SecondCaseStudy
                         }
                     }
 
+                    //herşeyi resim olarak kaydet.
                     layoutBitmap.Save(@"layout.png");
                     resultBitmap.Save(@"result.png");
 
@@ -120,6 +131,7 @@ namespace SecondCaseStudy
                 }
                 catch (IOException exception)
                 {
+                    //Hata mesajı yazdır
                     Console.WriteLine(exception.Message);
 
                     string message = exception.Message.ToString();
