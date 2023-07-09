@@ -19,11 +19,11 @@ Soru 1'nin cevabı **FirstCaseStudy** ve Soru 2'nin cevapları **SecondCaseStudy
 
 - Soru 1'in cevabı mevcuttur.
 
-- Random kod üretebilmek için **Fisher-Yates Shuffling** Algoritması kullanılmıştır.
+- Random kod üretebilmek için **Fisher-Yates Shuffling** Algoritması kullanılmıştır. 1000 tane random kod üretebilmektedir ve konsol'da yazdırabilmektedir.
+
+- **Kod Geçerliliği kontrolü yoktur.**
 
 - .NET CORE 6 ile geliştirilmiş bir konsol Uygulamasıdır.
-
-- 1000 tane random kod üretebilmektedir ve konsol'da yazdırabilmektedir.
 
 - Çalıştırmak için Visual Studio veya uyumlu bir IDE kullanılması yeterlidir.
 
